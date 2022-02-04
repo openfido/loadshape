@@ -1,4 +1,7 @@
-module tape;
+module tape
+{
+	csv_header_type NAME;
+}
 object collector
 {
 	group "class=triplex_load";

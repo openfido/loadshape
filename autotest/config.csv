@@ -1,5 +1,5 @@
-VERBOSE,True
-DEBUG,True
+VERBOSE,False
+DEBUG,False
 INPUT_CSV,ami.csv.gz
 GROUP_COUNT,10
 OUTPUT_PNG,loadshape.png
@@ -14,3 +14,4 @@ DATETIME_COLUMN,timestamp
 TIMEZONE_COLUMN,tz
 DATA_COLUMN,power
 LOADNAME_PREFIX,load
+ARCHIVE_FILE,result.tar.gz

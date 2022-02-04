@@ -99,6 +99,8 @@ VALID_CONFIG = {
     'LOADS_GLM':str,
     'LOAD_SCALE':float,
     'LOADNAME_PREFIX':str,
+
+    'ARCHIVE_FILE':str,
     }
 
 WORKDIR = ''
@@ -130,6 +132,8 @@ LOADS_GLM = ''
 SCHEDULES_GLM = ''
 LOAD_SCALE = 1000.0
 LOADNAME_PREFIX = ''
+
+ARCHIVE_FILE = ''
 
 E_OK = 0
 E_EXCEPTION = 1
@@ -379,7 +383,7 @@ try:
                     values = subset.median()
                     print(f"schedule loadshape_{group}","{",file=glm)
                     months = ["1,2,3","4,5,6","7,8,9","10,11,12"]
-                    weekdays = ["1,2,3,4,5","0,7"]
+                    weekdays = ["1,2,3,4,5","0,6"]
                     season_name = ["winter","spring","summer","fall"]
                     weekday_name = ["weekdays","weekends"]
                     for season in range(4):
@@ -467,6 +471,16 @@ try:
                 plt.xlim([0,191])            
                 plt.savefig(OPENFIDO_OUTPUT+OUTPUT_PNG, dpi=300)
             verbose(f"{OPENFIDO_OUTPUT}{OUTPUT_PNG} saved ok")
+
+        #
+        # Create archive output
+        #
+        if ARCHIVE_FILE:
+            os.chdir(OPENFIDO_OUTPUT)
+            if ARCHIVE_FILE.endswith("z"):
+                os.system(f"tar cfz {ARCHIVE_FILE} .")
+            else:
+                os.system(f"tar cf {ARCHIVE_FILE} .")
     else:
         warning("INPUT_CSV not specified, no input data")
 
