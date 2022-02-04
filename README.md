@@ -49,14 +49,14 @@ The timezone specification is given in hours offset relative to UTC, i.e., east 
 
 *Load map* - An optional CSV file containing the mapping of loads to the network model. The name of this file may be specified using the `LOADS_CSV` parameter in `config.csv`. Required columns correspond to GridLAB-D load object properties:
 
-| Property | Description
-| -------- | -----------
-| `meter_id` | The meter id from the AMI data
-| `class`    | The object class (`load` or `triplex_load`
-| `parent`   | The parent object ID (a valid network node name)
-| `phases`   | The load phases (must match network node)
-| `nominal_voltage` | The load nominal voltage (must match network node)
-| `{power,current,impedance}_fraction_[ABC]` | The ZIP powerflow `load` fractions (only for 1, 2, or 3-phase non-split loads)
+| Property                                      | Description
+| --------------------------------------------- | -----------
+| `meter_id`                                    | The meter id from the AMI data
+| `class`                                       | The object class (`load` or `triplex_load`
+| `parent`                                      | The parent object ID (a valid network node name)
+| `phases`                                      | The load phases (must match network node)
+| `nominal_voltage`                             | The load nominal voltage (must match network node)
+| `{power,current,impedance}_fraction_[ABC]`    | The ZIP powerflow `load` fractions (only for 1, 2, or 3-phase non-split loads)
 | `{power,current,impedance}_fraction_{1,2,12}` | The ZIP powerflow `triplex_load` fractions (only for single-phase split-tap loads)
 
 If the fractions are omitted, the ZIP load is set to a unitary constant power fraction.  All other columns are copied to the loads verbatim.
@@ -88,41 +88,38 @@ CONFIGURATION
 
 The following configuration parameters are supported
 
-| Parameter | Default | Description
-| --------- | ------- | -----------
-| `VERBOSE`   | True    | Enables verbose output.
-| `DEBUG`     | True    | Enables debug output.
-| `QUIET`     | False   | Disables all output.
-| `WARNING`   | True    | Enables warning output.
+| Parameter         | Default               | Description
+| ----------------- | --------------------- | -----------
+| `VERBOSE`         | `True`                | Enables verbose output.
+| `DEBUG`           | `True`                | Enables debug output.
+| `QUIET`           | `False`               | Disables all output.
+| `WARNING`         | `True`                | Enables warning output.
 | *Input*
-| `WORKDIR`   | `'/tmp'`  | Specifies the working directory.
-| `INPUT_CSV` | `''`      | Specifies AMI input data file (REQUIRED).
-| `DATETIME_COLUMN` | `'0'` | Specifies the date/time column in the AMI file.
-| `ID_COLUMN` | `'1'`     | Specifies the id column in the AMI file.
-| `DATA_COLUMN` | `'2'`   | Specifies the data column in the AMI file.
-| `TIMEZONE_COLUMN` | `'3'` | Specifies the timezone column in the AMI file.
+| `WORKDIR`         | `'/tmp'`              | Specifies the working directory.
+| `INPUT_CSV`       | `''`                  | Specifies AMI input data file (REQUIRED).
+| `DATETIME_COLUMN` | `'0'`                 | Specifies the date/time column in the AMI file.
+| `ID_COLUMN`       | `'1'`                 | Specifies the id column in the AMI file.
+| `DATA_COLUMN`     | `'2'`                 | Specifies the data column in the AMI file.
+| `TIMEZONE_COLUMN` | `'3'`                 | Specifies the timezone column in the AMI file.
 | `DATETIME_FORMAT` | `'%Y-%m-%d %H:%M:%S'` | Specifies the input date/time format.
 | *Analysis*
-| `FILL_METHOD` | `''`    | Specifies the fill method for missing data. Valid values are `'bfill'`, `'backfill'`, `'pad'`, `'ffill'`.
-| `RESAMPLE` | `''` | Specifies resample method to use. Valid methods include all DataFrame aggregators.
-| `AGGREGATION` | `'median'` | Group aggregation method. Valid methods include all DataFrame aggregators.
-| `GROUP_METHOD` | `'kmeans'` | Grouping method. Valid method is `'kmeans'`
-| `GROUP_COUNT` | `0` | Grouping count. Must be a positive number (REQUIRED).
+| `GROUP_METHOD`    | `'kmeans'`            | Grouping method. Valid method is `'kmeans'`.
+| `GROUP_COUNT`     | `0`                   | Grouping count. Must be a positive number (REQUIRED).
 | *Outputs*
-| `LOADSHAPES_CSV` | `'loadshapes.csv'` | Specifies the loadshape file to generate.
-| `GROUPS_CSV` | `'groups.csv'` | Specifies the group file to generate.
-| `FLOAT_FORMAT` | `'%.4g'` | Specifies float data format.
-| `SCALING` | `''` | may be `'energy'`, `'power'`, `''` means both.
+| `LOADSHAPES_CSV`  | `'loadshapes.csv'`    | Specifies the loadshape file to generate.
+| `GROUPS_CSV`      | `'groups.csv'`        | Specifies the group file to generate.
+| `FLOAT_FORMAT`    | `'%.4g'`              | Specifies float data format.
+| `ARCHIVE_FILE`    | `''`                  | Specifies the name TAR file to use (trailing `z` for compressed)
 | *Plotting*
-| `OUTPUT_PNG` | `''` | Specifies the output PNG file name.
-| `PNG_FIGSIZE` | `'10x7'` | Specifies the output PNG image size (in inches)
-| `PNG_FONTSIZE` | `14` | Specifies the output PNG image font size (in points)
+| `OUTPUT_PNG`      | `''`                  | Specifies the output PNG file name.
+| `PNG_FIGSIZE`     | `'10x7'`              | Specifies the output PNG image size (in inches)
+| `PNG_FONTSIZE`    | `14`                  | Specifies the output PNG image font size (in points)
 | *GridLAB-D*
-| `LOADS_CSV` | `''`      | Specifies the load mapping file.
-| `CLOCK_GLM` | `''` | Specifies the output GLM clock model fragment.
-| `LOADS_GLM` | `''` | Specifies the output GLM load model fragment.
-| `SCHEDULES_GLM` | `''` | Specifies the output GLM schedule model fragment.
-| `LOAD_SCALE` | '1000' | Specifies the scaling of the schedule data to load (e.g., 1kVA=1000VA)
+| `LOADS_CSV`       | `''`                  | Specifies the load mapping file.
+| `CLOCK_GLM`       | `''`                  | Specifies the output GLM clock model fragment.
+| `LOADS_GLM`       | `''`                  | Specifies the output GLM load model fragment.
+| `SCHEDULES_GLM`   | `''`                  | Specifies the output GLM schedule model fragment.
+| `LOAD_SCALE`      | '1000'                | Specifies the scaling of the schedule data to load (e.g., 1kVA=1000VA)
 
 ENVIRONMENT
 -----------

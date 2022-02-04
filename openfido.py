@@ -2,38 +2,7 @@
 
 The pipeline generates loadshapes using k-means clustering analysis on AMI load data.
 
-INPUTS
-------
-
-    config.csv (required) - control the pipeline run
-
-    data.csv[.gz] (required) - provides the AMI data
-
-    loads.csv (optional) - provides the GLM load models
-
-OUTPUTS
--------
-
-    loadshapes.csv (always generated) - provides the loadshape data
-
-    groups.csv (always generated) - provides the mapping of meters to loadshapes
-
-    loads.glm (generated when LOADS_GLM specified) - provides the GLM load objects
-
-    schedules.glm (generated when SCHEDULES_GLM specified) - provides the GLM schedule data
-
-    clock.glm (generated when CLOCK_GLM specified) - provides the GLM clock directive
-
-    loadshapes.png (generated when LOADSHAPE_PNG specified) - provide a plot of the loadshapes
-
-CONFIGURATION
--------------
-
-    INPUT_CSV,ami_data.csv
-    OUTPUT_CSV,loadshapes.csv
-    OUTPUT_GLM,loads.glm
-    DATETIME,datetime
-    POWER,real_power
+See https://github.com/openfido/loadshape for details.
 
 """
 
@@ -85,7 +54,7 @@ VALID_CONFIG = {
 
     # 'RESAMPLE':str,
     # 'FILL_METHOD':str,
-    'AGGREGATION':str,
+    # 'AGGREGATION':str,
     'GROUP_METHOD':str,
     'GROUP_COUNT':int,
 
@@ -114,11 +83,10 @@ DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 LOADSHAPES_CSV = 'loadshapes.csv'
 GROUPS_CSV = 'groups.csv'
 FLOAT_FORMAT = '%.4g'
-SCALING = '' # may be 'energy','power', '' means both
 
 FILL_METHOD = 'ffill'
 RESAMPLE = ''
-AGGREGATION = 'median'
+AGGREGATION = 'mean'
 GROUP_METHOD = 'kmeans'
 GROUP_COUNT = 0
 
