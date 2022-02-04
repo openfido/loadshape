@@ -95,31 +95,31 @@ The following configuration parameters are supported
 | `QUIET`           | `False`               | Disables all output.
 | `WARNING`         | `True`                | Enables warning output.
 | *Input*
-| `WORKDIR`         | `'/tmp'`              | Specifies the working directory.
-| `INPUT_CSV`       | `''`                  | Specifies AMI input data file (REQUIRED).
-| `DATETIME_COLUMN` | `'0'`                 | Specifies the date/time column in the AMI file.
-| `ID_COLUMN`       | `'1'`                 | Specifies the id column in the AMI file.
-| `DATA_COLUMN`     | `'2'`                 | Specifies the data column in the AMI file.
-| `TIMEZONE_COLUMN` | `'3'`                 | Specifies the timezone column in the AMI file.
-| `DATETIME_FORMAT` | `'%Y-%m-%d %H:%M:%S'` | Specifies the input date/time format.
+| `WORKDIR`         | `/tmp`                | Specifies the working directory.
+| `INPUT_CSV`       | None                  | Specifies AMI input data file (REQUIRED).
+| `DATETIME_COLUMN` | `0`                   | Specifies the date/time column in the AMI file.
+| `ID_COLUMN`       | `1`                   | Specifies the id column in the AMI file.
+| `DATA_COLUMN`     | `2`                   | Specifies the data column in the AMI file.
+| `TIMEZONE_COLUMN` | `3`                   | Specifies the timezone column in the AMI file.
+| `DATETIME_FORMAT` | `%Y-%m-%d %H:%M:%S`   | Specifies the input date/time format.
 | *Analysis*
-| `GROUP_METHOD`    | `'kmeans'`            | Grouping method. Valid method is `'kmeans'`.
+| `GROUP_METHOD`    | `kmeans`              | Grouping method. Valid method is `'kmeans'`.
 | `GROUP_COUNT`     | `0`                   | Grouping count. Must be a positive number (REQUIRED).
 | *Outputs*
-| `LOADSHAPES_CSV`  | `'loadshapes.csv'`    | Specifies the loadshape file to generate.
-| `GROUPS_CSV`      | `'groups.csv'`        | Specifies the group file to generate.
-| `FLOAT_FORMAT`    | `'%.4g'`              | Specifies float data format.
-| `ARCHIVE_FILE`    | `''`                  | Specifies the name TAR file to use (trailing `z` for compressed)
+| `LOADSHAPES_CSV`  | `loadshapes.csv`      | Specifies the loadshape file to generate.
+| `GROUPS_CSV`      | `groups.csv`          | Specifies the group file to generate.
+| `FLOAT_FORMAT`    | `%.4g`                | Specifies float data format.
+| `ARCHIVE_FILE`    | None                  | Specifies the name TAR file to use (trailing `z` for compressed)
 | *Plotting*
-| `OUTPUT_PNG`      | `''`                  | Specifies the output PNG file name.
-| `PNG_FIGSIZE`     | `'10x7'`              | Specifies the output PNG image size (in inches)
+| `OUTPUT_PNG`      | None                  | Specifies the output PNG file name.
+| `PNG_FIGSIZE`     | `10x7`                | Specifies the output PNG image size (in inches)
 | `PNG_FONTSIZE`    | `14`                  | Specifies the output PNG image font size (in points)
 | *GridLAB-D*
-| `LOADS_CSV`       | `''`                  | Specifies the load mapping file.
-| `CLOCK_GLM`       | `''`                  | Specifies the output GLM clock model fragment.
-| `LOADS_GLM`       | `''`                  | Specifies the output GLM load model fragment.
-| `SCHEDULES_GLM`   | `''`                  | Specifies the output GLM schedule model fragment.
-| `LOAD_SCALE`      | '1000'                | Specifies the scaling of the schedule data to load (e.g., 1kVA=1000VA)
+| `LOADS_CSV`       | None                  | Specifies the load mapping file.
+| `CLOCK_GLM`       | None                  | Specifies the output GLM clock model fragment.
+| `LOADS_GLM`       | None                  | Specifies the output GLM load model fragment.
+| `SCHEDULES_GLM`   | None                  | Specifies the output GLM schedule model fragment.
+| `LOAD_SCALE`      | `1000`                | Specifies the scaling of the schedule data to load (e.g., 1kVA=1000VA)
 
 ENVIRONMENT
 -----------
