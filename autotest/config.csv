@@ -1,0 +1,16 @@
+VERBOSE,True
+DEBUG,True
+INPUT_CSV,ami.csv.gz
+GROUP_COUNT,10
+OUTPUT_PNG,loadshape.png
+PNG_FIGSIZE,10x7
+PNG_FONTSIZE,14
+LOADS_CSV,loadmap.csv
+CLOCK_GLM,clock.glm
+SCHEDULES_GLM,schedules.glm
+LOADS_GLM,loads.glm
+ID_COLUMN,meter_id
+DATETIME_COLUMN,timestamp
+TIMEZONE_COLUMN,tz
+DATA_COLUMN,power
+LOADNAME_PREFIX,load

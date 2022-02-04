@@ -1,0 +1,15 @@
+module tape;
+object collector
+{
+	group "class=triplex_load";
+	file "triplex_load.csv";
+	property "sum(base_power_12)";
+	interval -1;
+}
+object collector
+{
+	group "class=load";
+	file "load.csv";
+	property "sum(base_power_A),sum(base_power_B),sum(base_power_C)";
+	interval -1;
+}
