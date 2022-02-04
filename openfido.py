@@ -478,9 +478,9 @@ try:
         if ARCHIVE_FILE:
             os.chdir(OPENFIDO_OUTPUT)
             if ARCHIVE_FILE.endswith("z"):
-                os.system(f"tar cfz {ARCHIVE_FILE} .")
+                os.system(f"tar cfz {ARCHIVE_FILE} --exclude {ARCHIVE_FILE} *")
             else:
-                os.system(f"tar cf {ARCHIVE_FILE} .")
+                os.system(f"tar cf {ARCHIVE_FILE} --exclude {ARCHIVE_FILE} *")
     else:
         warning("INPUT_CSV not specified, no input data")
 
