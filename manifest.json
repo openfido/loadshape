@@ -1,0 +1,7 @@
+{
+  "description" : "Loadshape analysis pipeline",
+  "docker" : "debian:11",
+  "git" : "https://github.com/openfido/loadshape.git",
+  "branch" : "main",
+  "script" : "openfido.sh"
+}
