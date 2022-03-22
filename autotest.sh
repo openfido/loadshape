@@ -2,19 +2,30 @@
 #
 # Generic python environment for OpenFIDO
 #
+# To run the test
+#
+#   $ sh autotest.sh
+#
 
-export OPENFIDO_INPUT=$PWD/autotest
-export OPENFIDO_OUTPUT=$PWD/autotest/output
-mkdir -p $OPENFIDO_OUTPUT
-rm -rf $OPENFIDO_OUTPUT/{*,.??*}
+set -e
+set -x
+set -p
 
-echo '*** INPUTS ***'
-ls -l $OPENFIDO_INPUT
+INPUTS=$(ls -1d $PWD/autotest/input_*)
+for INPUT in ${INPUTS// /\\ /}; do
+	echo Processing $INPUT...
+	export OPENFIDO_INPUT="$INPUT"
+	export OPENFIDO_OUTPUT=${INPUT/input_/output_}
+	mkdir -p $OPENFIDO_OUTPUT
+	rm -rf $OPENFIDO_OUTPUT/{*,.??*}
 
-python3 openfido.py
+	echo '*** INPUTS ***'
+	ls -l $OPENFIDO_INPUT
 
-echo '*** OUTPUTS ***'
-ls -l $OPENFIDO_OUTPUT
+	python3 openfido.py
 
-echo '*** END ***'
+	echo '*** OUTPUTS ***'
+	ls -l $OPENFIDO_OUTPUT
 
+	echo '*** END ***'
+done
