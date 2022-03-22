@@ -116,13 +116,13 @@
       "prompt" : "Enable verbose output",
       "description" : "Enable verbose output during processing",
       "default" : "false",
-      "input_type" : "boolean",
+      "input_type" : "boolean"
     },    
     "DEBUG" : {
       "prompt" : "Enable debug output",
       "description" : "Enable debugging output during processing",
       "default" : "false",
-      "input_type" : "boolean",
+      "input_type" : "boolean"
     }
   }
 }
