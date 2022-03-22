@@ -2,38 +2,7 @@
 
 The pipeline generates loadshapes using k-means clustering analysis on AMI load data.
 
-INPUTS
-------
-
-    config.csv (required) - control the pipeline run
-
-    data.csv[.gz] (required) - provides the AMI data
-
-    loads.csv (optional) - provides the GLM load models
-
-OUTPUTS
--------
-
-    loadshapes.csv (always generated) - provides the loadshape data
-
-    groups.csv (always generated) - provides the mapping of meters to loadshapes
-
-    loads.glm (generated when LOADS_GLM specified) - provides the GLM load objects
-
-    schedules.glm (generated when SCHEDULES_GLM specified) - provides the GLM schedule data
-
-    clock.glm (generated when CLOCK_GLM specified) - provides the GLM clock directive
-
-    loadshapes.png (generated when LOADSHAPE_PNG specified) - provide a plot of the loadshapes
-
-CONFIGURATION
--------------
-
-    INPUT_CSV,ami_data.csv
-    OUTPUT_CSV,loadshapes.csv
-    OUTPUT_GLM,loads.glm
-    DATETIME,datetime
-    POWER,real_power
+See https://github.com/openfido/loadshape for details.
 
 """
 
@@ -59,8 +28,8 @@ def boolstr(x):
     try:
         return(bool(int(x)))
     except:
-        x = str(x)
-    if x.lower() in ['yes','no','true','false']:
+        x = str(x).lower()
+    if x in ['yes','no','true','false']:
         return x in ['yes','true']
     else:
         raise Exception(f"{x} is not a boolean string value")
@@ -85,7 +54,7 @@ VALID_CONFIG = {
 
     # 'RESAMPLE':str,
     # 'FILL_METHOD':str,
-    'AGGREGATION':str,
+    # 'AGGREGATION':str,
     'GROUP_METHOD':str,
     'GROUP_COUNT':int,
 
@@ -98,6 +67,9 @@ VALID_CONFIG = {
     'SCHEDULES_GLM':str,
     'LOADS_GLM':str,
     'LOAD_SCALE':float,
+    'LOADNAME_PREFIX':str,
+
+    'ARCHIVE_FILE':str,
     }
 
 WORKDIR = ''
@@ -111,11 +83,10 @@ DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 LOADSHAPES_CSV = 'loadshapes.csv'
 GROUPS_CSV = 'groups.csv'
 FLOAT_FORMAT = '%.4g'
-SCALING = '' # may be 'energy','power', '' means both
 
-FILL_METHOD = ''
+FILL_METHOD = 'ffill'
 RESAMPLE = ''
-AGGREGATION = 'median'
+AGGREGATION = 'mean'
 GROUP_METHOD = 'kmeans'
 GROUP_COUNT = 0
 
@@ -128,6 +99,9 @@ CLOCK_GLM = ''
 LOADS_GLM = ''
 SCHEDULES_GLM = ''
 LOAD_SCALE = 1000.0
+LOADNAME_PREFIX = ''
+
+ARCHIVE_FILE = ''
 
 E_OK = 0
 E_EXCEPTION = 1
@@ -164,7 +138,10 @@ def debug(msg):
         print(f"DEBUG [loadshape@{toc()}]: {msg}",file=sys.stderr,flush=True)
 
 def to_datetime(t,format=DATETIME_FORMAT):
-    return dt.datetime.strptime(t,format)
+    if format:
+        return dt.datetime.strptime(t,format)
+    else:
+        return dt.datetime.fromisoformat
 
 def to_float(x,nan=np.nan):
     try:
@@ -227,7 +204,7 @@ try:
 
     if LOADS_GLM:
         if LOADS_CSV:
-            loads = pd.read_csv(OPENFIDO_INPUT+LOADS_CSV,dtype=str).set_index(ID_COLUMN)
+            loads = pd.read_csv(OPENFIDO_INPUT+LOADS_CSV,dtype=str)
             verbose("loads: {0} rows x {1} columns".format(*loads.shape))
             debug(loads)
         else:
@@ -264,20 +241,20 @@ try:
         debug(data)
 
         #
-        # Fill missing data
-        #
-        if FILL_METHOD:
-            data.astype(np.float64).fillna(method=FILL_METHOD,inplace=True)
-
-            verbose("fill: {0} rows x {1} columns".format(*data.shape))
-            debug(data)
-
-        #
         # Resample data
         #
         if RESAMPLE:
             data = getattr(data.resample('H'),RESAMPLE)()
             verbose("resample: {0} rows x {1} columns".format(*data.shape))
+            debug(data)
+
+        #
+        # Fill missing data
+        #
+        if FILL_METHOD:
+            data.power.fillna(method=FILL_METHOD,inplace=True)
+
+            verbose("fill: {0} rows x {1} columns".format(*data.shape))
             debug(data)
 
         #
@@ -334,7 +311,7 @@ try:
         # Output CSV loadshapes
         #
         if LOADSHAPES_CSV:
-            loadshapes = groups.groupby("group").median()
+            loadshapes = groups.groupby("group").mean()
             seasons = ["win","spr","sum","fal"]
             weekdays = ["wd","we"]
             loadshapes.columns = [f"{seasons[season]}_{weekdays[weekend]}_{hour}h" for season in range(4) for weekend in range(2) for hour in range(24)]
@@ -374,7 +351,7 @@ try:
                     values = subset.median()
                     print(f"schedule loadshape_{group}","{",file=glm)
                     months = ["1,2,3","4,5,6","7,8,9","10,11,12"]
-                    weekdays = ["1,2,3,4,5","0,7"]
+                    weekdays = ["1,2,3,4,5","0,6"]
                     season_name = ["winter","spring","summer","fall"]
                     weekday_name = ["weekdays","weekends"]
                     for season in range(4):
@@ -390,40 +367,50 @@ try:
         # Generate GridLAB-D loads
         #
         if LOADS_GLM:
+            if type(ID_COLUMN) is int:
+                loads.set_index(data.reset_index().columns[ID_COLUMN],inplace=True)
+            else:
+                loads.set_index(ID_COLUMN,inplace=True)
+            values = groups.reset_index().set_index(["meter_id","group"])
+            values.index.names = ['meter_id', 'loadshape']
+            values = values.melt(ignore_index=False).reset_index().set_index(["meter_id","loadshape","group"])
+            values.index.names = ['meter_id', 'loadshape','hourtype']
+            meters = data.set_index(["meter_id","group"])
+            meters.index.names = ['meter_id','hourtype']
+            mapping = meters.join(values).sort_index()
+            scale = pd.DataFrame(mapping.groupby("meter_id").std().power/mapping.groupby("meter_id").std().value,columns=["scale"])
+            offset = pd.DataFrame((1-scale).scale*mapping.groupby("meter_id").mean()["power"],columns=["offset"])
             with open(OPENFIDO_OUTPUT+LOADS_GLM,"w") as glm:
                 print(f"module powerflow;",file=glm)
                 for meter in groups.index.get_level_values(level=0).unique():
-                    values = groups.xs(meter,level=0)
-                    group_id = values.index.values[0]
-                    group = groups.xs(group_id,level=1)
-                    scale = values.sum(axis=1) / group.mean().sum()
                     print(f"object {loads.loc[meter,'class']}","{",file=glm)
+                    group_id = groups.loc[meter].index.values[0]
                     has_fraction = False
+                    if LOADNAME_PREFIX:
+                        print(f"  name \"{LOADNAME_PREFIX}{meter}\";",file=glm)
                     for propname in loads.columns:
                         if propname not in ["class","meter_id"]:
-                            print(f"  {propname} {loads.loc[meter,propname]};\n",file=glm)
+                            print(f"  {propname} {loads.loc[meter,propname]};",file=glm)
                         if "fraction" in propname.split("_"):
                             has_fraction = True
                     phases = loads.loc[meter,'phases']
                     if "A" in phases or "B" in phases or "C" in phases:
                         if "S" in phases:
-                            print(f"  base_power_12 loadshape_{group_id}*{scale[group_id]*LOAD_SCALE:.4g};",file=glm)
-                            if not has_fraction:
-                                print("  power_fraction_12 1.0;",file=glm)
+                            phase = "12"
+                            print(f"  base_power_{phase} loadshape_{group_id}*{scale.loc[meter].values[0]*LOAD_SCALE:.4g}{offset.loc[meter].values[0]*LOAD_SCALE:+.4g};",file=glm)
                         else:
-                            n_phases = 0.0
+                            n_phases = 0
                             for phase in "ABC":
                                 if phase in phases:
                                     n_phases += 1
                             for phase in "ABC":
                                 if phase in phases:
-                                    print(f"  base_power_{phase} loadshape_{group_id}*{scale[group_id]*LOAD_SCALE/n_phases:.4g};",file=glm)
-                                    if not has_fraction:
-                                        print(f"  power_fraction_{phase} 1.0;\n",file=glm)
+                                    print(f"  base_power_{phase} loadshape_{group_id}*{scale.loc[meter].values[0]/n_phases*LOAD_SCALE:.4g}{offset.loc[meter].values[0]/n_phases*LOAD_SCALE:+.4g};",file=glm)
+                        if not has_fraction:
+                            print(f"  power_fraction_{phase} 1.0;\n",file=glm)
                     else:
                         warning(f"load_{meter} has no phases specified")
-                    print("}",file=glm)    
-
+                    print("}",file=glm)
         #
         # Output loadshape plot    
         #    
@@ -452,6 +439,16 @@ try:
                 plt.xlim([0,191])            
                 plt.savefig(OPENFIDO_OUTPUT+OUTPUT_PNG, dpi=300)
             verbose(f"{OPENFIDO_OUTPUT}{OUTPUT_PNG} saved ok")
+
+        #
+        # Create archive output
+        #
+        if ARCHIVE_FILE:
+            os.chdir(OPENFIDO_OUTPUT)
+            if ARCHIVE_FILE.endswith("z"):
+                os.system(f"tar cfz {ARCHIVE_FILE} --exclude {ARCHIVE_FILE} *")
+            else:
+                os.system(f"tar cf {ARCHIVE_FILE} --exclude {ARCHIVE_FILE} *")
     else:
         warning("INPUT_CSV not specified, no input data")
 
