@@ -59,8 +59,8 @@
     "GROUP_COUNT" : {
       "prompt" : "Group count",
       "description" : "The number of loadshapes to generate (must be positive).",
-      "default" : 4,
-      "input_type" : "int required",
+      "default" : "4",
+      "input_type" : "int required"
     },
 
     "Output" : { "input_type" : "title" },
@@ -68,7 +68,7 @@
       "prompt" : "Output loadshape CSV filename",
       "description" : "The CSV file name in which loadshape data is output.",
       "default" : "loadshapes.csv",
-      "input_type" : "str",
+      "input_type" : "str"
     },
 
     "Plots" : { "input_type" : "title" },
@@ -76,7 +76,7 @@
       "prompt" : "Plot filename",
       "description" : "Output PNG plot file name",
       "default" : "loadshapes.png",
-      "input_type" : "str",
+      "input_type" : "str"
     },
 
     "GridLAB-D" : { "input_type" : "title" },
@@ -84,31 +84,31 @@
       "prompt" : "Load map input CSV",
       "description" : "The CSV input file containing the load mapping to meter objects.",
       "default" : "",
-      "input_type" : "str",
+      "input_type" : "str"
     },
     "CLOCK_GLM" : {
       "prompt" : "GLM clock output",
       "description" : "The GLM file to which the GridLAB-D clock is output.",
       "default" : "clock.glm",
-      "input_type" : "str",
+      "input_type" : "str"
     },
     "LOADS_GLM" : {
       "prompt" : "GLM loads output",
       "description" : "The CSV file name in which loadshape data is output.",
       "default" : "loads.glm",
-      "input_type" : "str",
+      "input_type" : "str"
     },
     "SCHEDULES_GLM" : {
       "prompt" : "GLM schedules",
       "description" : "The CSV file name in which loadshape data is output.",
       "default" : "loadshapes.csv",
-      "input_type" : "str",
+      "input_type" : "str"
     },
     "LOAD_SCALE" : {
       "prompt" : "Load scale",
       "description" : "Scaling of schedule load data",
       "default" : "1000",
-      "input_type" : "float required",
+      "input_type" : "float required"
     }
   }
 }
