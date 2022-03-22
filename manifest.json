@@ -6,9 +6,9 @@
   "branch" : "main",
   "script" : "openfido.sh",
   "manual" : {
-    "config.csv" : "csv"
+    "config" : "csv"
   },
-  "config.csv" : {
+  "config" : {
 
     "Input" : { "input_type" : "title" },
     "INPUT_CSV" : {
