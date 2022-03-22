@@ -64,7 +64,7 @@
     },
 
     "Output" : { "input_type" : "title" },
-    "LOADSHAPE_CSV" : {
+    "LOADSHAPES_CSV" : {
       "prompt" : "Output loadshape CSV filename",
       "description" : "The CSV file name in which loadshape data is output.",
       "default" : "loadshapes.csv",
