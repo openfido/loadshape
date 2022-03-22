@@ -1,7 +1,114 @@
 {
+  "name" : "Loadshape analysis",
   "description" : "Loadshape analysis pipeline",
   "docker" : "debian:11",
   "git" : "https://github.com/openfido/loadshape.git",
   "branch" : "main",
-  "script" : "openfido.sh"
+  "script" : "openfido.sh",
+  "manual" : {
+    "CONFIGCSV" : "csv"
+  },
+  "CONFIGCSV" : {
+
+    "Input" : { "input_type" : "title" },
+    "INPUT_CSV" : {
+      "prompt" : "AMI data file",
+      "description" : "Data file as CSV (compressed ok).",
+      "default" : "ami_data.csv",
+      "input_type" : "str required"
+    },
+    
+    "CSV format" : { "input_type" : "title" }, 
+    "DATETIME_COLUMN" :
+    {
+      "prompt" : "Date/time column(s)",
+      "description" : "Column number(s) for date/time values. If time column is separate from date column use comma to the column numbers.",
+      "default" : "0",
+      "input_type" : "int required"
+    },
+    "ID_COLUMN" :
+    {
+      "prompt" : "Meter ID column",
+      "description" : "Column number for the meter ID",
+      "default" : "1",
+      "input_type" : "int required"
+    },
+    "DATA_COLUMN" :
+    {
+      "prompt" : "Value column",
+      "description" : "Column number for meter values.",
+      "default" : "2",
+      "input_type" : "int required"
+    },
+    "TIMEZONE_COLUMN" :
+    {
+      "prompt" : "Timezone column",
+      "description" : "Column number for timezone offsets.",
+      "default" : "3",
+      "input_type" : "int required"
+    },
+    "DATETIME_FORMAT" :
+    {
+      "prompt" : "Date/time format",
+      "description" : "Format of date/time values. Uses strftime specification.",
+      "default" : "%Y-%m-%d %H:%M:%S",
+      "input_type" : "str required"
+    },
+
+    "Analysis" : { "input_type" : "title" },
+    "GROUP_COUNT" : {
+      "prompt" : "Group count",
+      "description" : "The number of loadshapes to generate (must be positive).",
+      "default" : 4,
+      "input_type" : "int required",
+    },
+
+    "Output" : { "input_type" : "title" },
+    "LOADSHAPE_CSV" : {
+      "prompt" : "Output loadshape CSV filename",
+      "description" : "The CSV file name in which loadshape data is output.",
+      "default" : "loadshapes.csv",
+      "input_type" : "str",
+    },
+
+    "Plots" : { "input_type" : "title" },
+    "OUTPUT_PNG" : {
+      "prompt" : "Plot filename",
+      "description" : "Output PNG plot file name",
+      "default" : "loadshapes.png",
+      "input_type" : "str",
+    },
+
+    "GridLAB-D" : { "input_type" : "title" },
+    "LOADS_CSV" : {
+      "prompt" : "Load map input CSV",
+      "description" : "The CSV input file containing the load mapping to meter objects.",
+      "default" : "",
+      "input_type" : "str",
+    },
+    "CLOCK_GLM" : {
+      "prompt" : "GLM clock output",
+      "description" : "The GLM file to which the GridLAB-D clock is output.",
+      "default" : "clock.glm",
+      "input_type" : "str",
+    },
+    "LOADS_GLM" : {
+      "prompt" : "GLM loads output",
+      "description" : "The CSV file name in which loadshape data is output.",
+      "default" : "loads.glm",
+      "input_type" : "str",
+    },
+    "SCHEDULES_GLM" : {
+      "prompt" : "GLM schedules",
+      "description" : "The CSV file name in which loadshape data is output.",
+      "default" : "loadshapes.csv",
+      "input_type" : "str",
+    },
+    "LOAD_SCALE" : {
+      "prompt" : "Load scale",
+      "description" : "Scaling of schedule load data",
+      "default" : "1000",
+      "input_type" : "float required",
+    }
+  }
 }
