@@ -6,9 +6,9 @@
   "branch" : "main",
   "script" : "openfido.sh",
   "manual" : {
-    "CONFIGCSV" : "csv"
+    "Run specification (config.csv)" : "csv"
   },
-  "CONFIGCSV" : {
+  "Run specification (config.csv)" : {
 
     "Input" : { "input_type" : "title" },
     "INPUT_CSV" : {
@@ -23,28 +23,28 @@
     {
       "prompt" : "Date/time column(s)",
       "description" : "Column number(s) for date/time values. If time column is separate from date column use comma to the column numbers.",
-      "default" : "0",
+      "default" : 0,
       "input_type" : "int required"
     },
     "ID_COLUMN" :
     {
       "prompt" : "Meter ID column",
       "description" : "Column number for the meter ID",
-      "default" : "1",
+      "default" : 1,
       "input_type" : "int required"
     },
     "DATA_COLUMN" :
     {
       "prompt" : "Value column",
       "description" : "Column number for meter values.",
-      "default" : "2",
+      "default" : 2,
       "input_type" : "int required"
     },
     "TIMEZONE_COLUMN" :
     {
       "prompt" : "Timezone column",
       "description" : "Column number for timezone offsets.",
-      "default" : "3",
+      "default" : 3,
       "input_type" : "int required"
     },
     "DATETIME_FORMAT" :
@@ -59,7 +59,7 @@
     "GROUP_COUNT" : {
       "prompt" : "Group count",
       "description" : "The number of loadshapes to generate (must be positive).",
-      "default" : "4",
+      "default" : 4,
       "input_type" : "int required"
     },
 
@@ -107,7 +107,7 @@
     "LOAD_SCALE" : {
       "prompt" : "Load scale",
       "description" : "Scaling of schedule load data",
-      "default" : "1000",
+      "default" : 1000.0,
       "input_type" : "float required"
     }
   }
