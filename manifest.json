@@ -94,7 +94,7 @@
     },
     "LOADS_GLM" : {
       "prompt" : "GLM loads output",
-      "description" : "The CSV file name in which loadshape data is output.",
+      "description" : "The CSV file name in which loadshape data is output (requires load map input CSV).",
       "default" : "loads.glm",
       "input_type" : "str"
     },
