@@ -24,34 +24,34 @@
       "prompt" : "Date/time column(s)",
       "description" : "Column number(s) for date/time values. If time column is separate from date column use comma to the column numbers.",
       "default" : "timestamp",
-      "input_type" : "int required"
+      "input_type" : "str required"
     },
     "ID_COLUMN" :
     {
       "prompt" : "Meter ID column",
       "description" : "Column number for the meter ID",
       "default" : "meter_id",
-      "input_type" : "int required"
+      "input_type" : "str required"
     },
     "DATA_COLUMN" :
     {
       "prompt" : "Value column",
       "description" : "Column number for meter values.",
       "default" : "power",
-      "input_type" : "int required"
+      "input_type" : "str required"
     },
     "TIMEZONE_COLUMN" :
     {
       "prompt" : "Timezone column",
       "description" : "Column number for timezone offsets.",
       "default" : "timezone",
-      "input_type" : "int required"
+      "input_type" : "str required"
     },
     "DATETIME_FORMAT" :
     {
       "prompt" : "Date/time format",
       "description" : "Format of date/time values. Uses strftime specification.",
-      "default" : "%m/%d/%Y %H:%M",
+      "default" : "%Y-%m-%d %H:%M:%S",
       "input_type" : "str required"
     },
 
