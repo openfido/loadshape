@@ -252,7 +252,7 @@ try:
         # Fill missing data
         #
         if FILL_METHOD:
-            data.power.fillna(method=FILL_METHOD,inplace=True)
+            data[DATA_COLUMN].fillna(method=FILL_METHOD,inplace=True)
 
             verbose("fill: {0} rows x {1} columns".format(*data.shape))
             debug(data)
@@ -379,7 +379,7 @@ try:
             meters.index.names = ['meter_id','hourtype']
             mapping = meters.join(values).sort_index()
             scale = pd.DataFrame(mapping.groupby("meter_id").std().power/mapping.groupby("meter_id").std().value,columns=["scale"])
-            offset = pd.DataFrame((1-scale).scale*mapping.groupby("meter_id").mean()["power"],columns=["offset"])
+            offset = pd.DataFrame((1-scale).scale*mapping.groupby("meter_id").mean()[DATA_COLUMN],columns=["offset"])
             with open(OPENFIDO_OUTPUT+LOADS_GLM,"w") as glm:
                 print(f"module powerflow;",file=glm)
                 for meter in groups.index.get_level_values(level=0).unique():
