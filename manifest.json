@@ -14,8 +14,8 @@
     "INPUT_CSV" : {
       "prompt" : "AMI data file",
       "description" : "Data file as CSV (compressed ok).",
-      "default" : "ami_data.csv",
-      "input_type" : "str required"
+      "default" : "",
+      "input_type" : "upload required"
     },
     
     "CSV format" : { "input_type" : "title" }, 
@@ -51,7 +51,7 @@
     {
       "prompt" : "Date/time format",
       "description" : "Format of date/time values. Uses strftime specification.",
-      "default" : "%Y-%m-%d %H:%M:%S",
+      "default" : "%m/%d/%Y %H:%M",
       "input_type" : "str required"
     },
 
@@ -84,7 +84,7 @@
       "prompt" : "Load map input CSV",
       "description" : "The CSV input file containing the load mapping to meter objects.",
       "default" : "",
-      "input_type" : "str"
+      "input_type" : "upload"
     },
     "CLOCK_GLM" : {
       "prompt" : "GLM clock output",
