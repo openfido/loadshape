@@ -44,7 +44,7 @@
     {
       "prompt" : "Timezone column",
       "description" : "Column number for timezone offsets.",
-      "default" : "timezone",
+      "default" : "tz",
       "input_type" : "str required"
     },
     "DATETIME_FORMAT" :
