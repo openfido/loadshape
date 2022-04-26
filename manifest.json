@@ -100,8 +100,8 @@
     },
     "SCHEDULES_GLM" : {
       "prompt" : "GLM schedules",
-      "description" : "The CSV file name in which loadshape data is output.",
-      "default" : "loadshapes.csv",
+      "description" : "The GLM file name in which loadshape schedule data is output.",
+      "default" : "loadshapes.glm",
       "input_type" : "str"
     },
     "LOAD_SCALE" : {
