@@ -166,7 +166,7 @@ try:
     elif not OPENFIDO_OUTPUT.endswith("/"):
         OPENFIDO_OUTPUT += "/"
     if os.listdir(OPENFIDO_OUTPUT) and OPENFIDO_OUTPUT != os.getenv("PWD")+"/examples/":
-        error(E_FAILED,"output folder is not empty")
+        warning("output folder is not empty")
 
     # get pipeline configuration 
     if os.path.exists(OPENFIDO_INPUT+"config.csv"):
